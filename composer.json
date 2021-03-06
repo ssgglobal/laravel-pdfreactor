@@ -1,9 +1,11 @@
 {
-    "name": "ssgglobal/php-component",
-    "description": "A template for creating PHP components",
+    "name": "ssgglobal/laravel-pdfreactor",
+    "description": "A PHP wrapper for using PDFreactor with Laravel.",
     "type": "library",
     "require": {
-        "php": ">= 7.3"
+        "php": ">= 7.3",
+        "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
+        "illuminate/support": "^6|^7|^8"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",
@@ -20,12 +22,12 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "StepStone\\Component\\": "src/"
+            "StepStone\\PdfReactor\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "StepStone\\Component\\Tests\\": "tests/"
+            "StepStone\\PdfReactor\\Tests\\": "tests/"
         }
     },
     "repositories": [{
