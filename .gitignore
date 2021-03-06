@@ -1,0 +1,11 @@
+# Composer
+vendor/
+composer.phar
+composer.lock
+
+# PhpStorm
+/.idea
+
+# PHPUnit
+/.phpunit.cache
+.phpunit.result.cache
