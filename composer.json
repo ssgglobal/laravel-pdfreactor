@@ -33,5 +33,15 @@
     "repositories": [{
         "type": "composer",
         "url": "https://satis.dseapps.com/"
-    }]
+    }],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "StepStone\\PdfReactor\\ServiceProvider"
+            ],
+            "aliases": {
+                "PdfReactor": "StepStone\\PdfReactor\\Facade"
+            }
+        }
+    }
 }
