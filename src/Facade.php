@@ -8,6 +8,6 @@ class Facade extends BaseFacade
 {
     protected static function getFacadeAccessor()
     {
-        return PdfReactor::class;
+        return 'StepStone\PdfReactor\PdfReactor';
     }
 }

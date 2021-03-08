@@ -10,7 +10,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/services.php', 'services');
 
-        $this->app->singleton(PdfReactor::class, function ($app) {
+        $this->app->singleton('StepStone\PdfReactor\PdfReactor', function ($app) {
             $services   = $app['config']['services'];
 
             return new PdfReactor($services['pdfreactor.host'], $services['pdfreactor.port'], $services['pdfreactor.key']);
