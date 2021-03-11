@@ -1,4 +1,8 @@
 releases:
+  - version: 2.0.1
+    author: '@jesscarlos'
+    description: 'Fix references to PDFreactor.'
+
   - version: 2.0.0
     author: '@jesscarlos'
     description: 'Fix Laravel & Composer compatibility issues.'

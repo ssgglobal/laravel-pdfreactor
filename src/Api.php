@@ -7,7 +7,7 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\RequestException;
 use stdClass;
-use StepStone\PDFreactor\Exceptions\HttpException;
+use StepStone\PdfReactor\Exceptions\HttpException;
 
 class Api
 {
