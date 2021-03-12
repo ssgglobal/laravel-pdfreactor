@@ -3,7 +3,7 @@ name: Unit Tests
 on:
   push:
     branches:
-      - '2.1.0'
+      - '*'
   pull_request:
     branches:
       - main
