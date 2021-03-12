@@ -18,7 +18,7 @@ jobs:
       - run: echo "Triggered by ${GITHUB_REF}."
 
       - name: Get version
-        id: getversion
-        uses: diligencia/semantic-git-version-action@master
-      - name: Echo name
-        run: echo "The version of the branch is ${{ steps.getversion.outputs.version }}. Major -> ${{ steps.getversion.outputs.major}} Minor -> ${{ steps.getversion.outputs.minor}} Patch -> ${{ steps.getversion.outputs.patch}}"
+        id: versioning
+        uses: sceccotti89/Github-Action-Versioning@v1.0.5
+      - name: Get the output version
+        run: echo "Version = ${{ steps.versioning.outputs.version }}"
