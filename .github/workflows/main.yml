@@ -1,0 +1,22 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get version
+        id: getversion
+        uses: diligencia/semantic-git-version-action@master
+      - name: Echo name
+        run: echo "The version of the branch is ${{ steps.getversion.outputs.version }}. Major -> ${{ steps.getversion.outputs.major}} Minor -> ${{ steps.getversion.outputs.minor}} Patch -> ${{ steps.getversion.outputs.patch}}"
