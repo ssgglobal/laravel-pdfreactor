@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - run: echo "Triggered by ${{ github.GITHUB_REF }}."
+      - run: echo "Triggered by ${GITHUB_REF}."
 
       - name: Get version
         id: getversion
