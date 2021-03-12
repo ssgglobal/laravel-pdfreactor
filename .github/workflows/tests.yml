@@ -35,7 +35,5 @@ jobs:
           composer install --no-progress
 
       - name: PHPUnit Tests
-        env:
-          PDFREACTOR_HOST: 'http://pdfreactor'
         run:
           ./vendor/bin/phpunit
