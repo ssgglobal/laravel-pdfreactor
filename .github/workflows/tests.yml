@@ -10,7 +10,7 @@ on:
 
 jobs:
 
-  php-7.3:
+  'php-7_3':
 
     runs-on: ubuntu-20.04
 
