@@ -32,8 +32,8 @@
 namespace StepStone\PdfReactor;
 
 use Exception;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use stdClass;
 use StepStone\PdfReactor\Exceptions\HttpException;
 use StepStone\PdfReactor\Data\Progress;
@@ -42,11 +42,14 @@ use StepStone\PdfReactor\Data\Version;
 
 class PdfReactor
 {
-    const CLIENT    = 'PHP';
+    const CLIENT    = 'DSEbot';
     const VERSION   = 2;
 
-    /** @var Api */
-    protected $api;
+    /** @var string */
+    protected $apiRestPrefix    = 'service/rest';
+
+    /** @var Client */
+    protected $httpClient;
     
     /**
      * Store the result of the last API call made.
@@ -56,31 +59,43 @@ class PdfReactor
     protected $result;
 
     /**
-     * Creates a new instance of Api to use.
+     * Class Constructor.
+     * 
+     * Setup HttpClient for future calls to PdfReactor server.
      *
-     * @param string $url
+     * @param string $host
+     * @param string|null $key
      * @param integer $port
-     * @param string|null $apiKey
-     * @param MockHandler|null $mock
+     * @param string|null $apiRestPrefix
+     * @param array $options @see https://docs.guzzlephp.org/en/stable/request-options.html
      */
-    public function __construct(string $url, int $port = 9423, ?string $apiKey = null, ?MockHandler $mock = null)
-    {
+    public function __construct(
+        string $host, 
+        ?string $key            = null, 
+        int $port               = 9423, 
+        ?string $apiRestPrefix = null, 
+        array $headers          = [],
+        bool $allowRedirects    = false,
+        bool $httpErrors        = true
+    ) {
+        $this->apiRestPrefix    = $apiRestPrefix ?: $this->apiRestPrefix;
+        
         $options    = [
-            'allow_redirects'   => false,
-            'base_uri'  => "{$url}:{$port}/service/rest/",
-            'http_errors'       => true,
-            'query'             => [],
+            'allow_redirects'   => $allowRedirects,
+            'base_uri'  => rtrim($host, '/') . ":{$port}",
+            'headers'   => array_merge([
+                'Content-Type'  => 'application/json',
+                'User-Agent'    => PdfReactor::CLIENT . ' PHP Client v' . PdfReactor::VERSION,
+            ], $headers),
+            'http_errors'   => $httpErrors,
+            'query'         => [],
         ];
 
-        if ($apiKey) {
-            $options['query']['apiKey'] = $apiKey;
+        if ($key) {
+            $options['query']['apiKey'] = $key;
         }
 
-        if ($mock) {
-            $options['handler'] = HandlerStack::create($mock);
-        }
-
-        $this->api  = new Api($options);
+        $this->httpClient   = new Client($options);
     }
 
     /**
@@ -108,7 +123,7 @@ class PdfReactor
             throw new Exception('$convertable must be an Array or Convertable.');
         }
 
-        $this->result = $this->api->send('POST', 'convert/async.json', $convertable->toArray());
+        $this->result = $this->call('POST', 'convert/async.json', $convertable->toArray());
 
         if (! isset($this->result->headers['Location'][0])) {
             throw new HttpException("Unable to retrieve Document ID from Response.", 500);
@@ -137,7 +152,7 @@ class PdfReactor
     public function deleteDocument(string $documentId): bool
     {
         try {
-            $this->result = $this->api->send('DELETE', "document/{$documentId}.json");
+            $this->result = $this->call('DELETE', "document/{$documentId}.json");
 
             return ($this->result->status === 204);
 
@@ -162,7 +177,7 @@ class PdfReactor
     public function getDocument(string $documentId): Result
     {
         try {
-            $this->result   = $this->api->send('GET', "document/{$documentId}.json");
+            $this->result   = $this->call('GET', "document/{$documentId}.json");
 
             return (new Result($this->result->body));
 
@@ -194,7 +209,7 @@ class PdfReactor
     {
         try {
 
-            $this->result   = $this->api->send('GET', "document/{$documentId}.bin");
+            $this->result   = $this->call('GET', "document/{$documentId}.bin");
 
             // write the pdf to disk if a $filename is given.
             if ($filename) {
@@ -248,7 +263,7 @@ class PdfReactor
         // The native PDFreactor error doesn't attach the $documentId in the
         // error message, so we'll catch and rethrow with it.
         try {
-            $this->result = $this->api->send('GET', "progress/{$documentId}.json");
+            $this->result = $this->call('GET', "progress/{$documentId}.json");
 
             return (new Progress($this->result->body));
 
@@ -277,7 +292,7 @@ class PdfReactor
     {
         try {
 
-            $this->result   = $this->api->send('GET', 'status.json');
+            $this->result   = $this->call('GET', 'status.json');
 
             return (object)['status' => 200, 'message' => 'OK'];
 
@@ -317,8 +332,49 @@ class PdfReactor
      */
     public function getVersion(): Version
     {
-        $this->result   = $this->api->send('GET', 'version.json');
+        $this->result   = $this->call('GET', 'version.json');
         
         return (new Version($this->result->body));
+    }
+
+    /**
+     * Makes the HTTP request to the server.
+     *
+     * @param string $verb
+     * @param string $uri
+     * @param string|null $body
+     * @return ReactorResponse
+     */
+    protected function call(string $verb, string $uri, $body = null): ReactorResponse
+    {
+        try {
+            $uri        = $this->apiRestPrefix . '/' . ltrim($uri, '/');
+            
+            switch (strtoupper($verb)) {
+                case 'GET':
+                    $response   = $this->httpClient->request('GET', $uri);
+                break;
+
+                case 'POST':
+                    $response   = $this->httpClient->request('POST', $uri, ['json' => $body]);
+                break;
+
+                case 'DELETE':
+                    $response   = $this->httpClient->request('DELETE', $uri);
+                break;
+
+                default:
+                    throw new Exception('Request method is not supported');
+            }
+
+            return new ReactorResponse($response);
+
+        } catch (RequestException $e) {
+            die($e->getMessage());
+        
+        } catch (Exception $e) {
+            // convert to HttpException
+            throw new HttpException($e->getMessage(), 500, $e->getCode(), $e);
+        } 
     }
 }

@@ -1,0 +1,14 @@
+version: '3'
+
+networks:
+  pdfreactor:
+
+services:
+
+  pdfreactor10:
+    container_name: pdfreactor10
+    image: realobjects/pdfreactor:10
+    networks:
+      - pdfreactor
+    ports:
+      - 8080:9423
