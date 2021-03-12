@@ -1,0 +1,40 @@
+name: Unit Tests
+
+on:
+  push:
+    - '2.1.0'
+pull_request:
+  branches:
+    - main
+
+jobs:
+
+  php-7.3:
+
+    runs-on: ubuntu-20.04
+
+    services:
+      pdfreactor:
+        image: realobjects/pdfreactor:10
+        ports:
+          - 8080:9423
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP 7.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.3'
+
+      - name: PHP Composer
+        run:
+          composer install --no-progress
+
+      - name: PHPUnit Tests
+        env:
+          PDFREACTOR_HOST: 'http://pdfreactor'
+        run:
+          ./vendor/bin/phpunit

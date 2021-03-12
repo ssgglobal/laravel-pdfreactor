@@ -60,3 +60,13 @@ For a full list of functions visit [PDFreactor's](https://pdfreactor.com) websit
 
     $document   = PdfReactor::convertAsync($config);
 ```
+
+## Testing
+
+```
+// Use docker compose to turn on the server
+docker-compose up -d
+
+// run phpunit
+./vendor/bin/phpunit
+```
