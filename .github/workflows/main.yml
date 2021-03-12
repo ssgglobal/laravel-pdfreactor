@@ -7,15 +7,16 @@ on:
 
 jobs:
 
-  runs-on: ubuntu-20.04
+  build:
+    runs-on: ubuntu-20.04
 
-  steps:
+    steps:
 
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Get version
-      id: getversion
-      uses: diligencia/semantic-git-version-action@master
-    - name: Echo name
-      run: echo "The version of the branch is ${{ steps.getversion.outputs.version }}. Major -> ${{ steps.getversion.outputs.major}} Minor -> ${{ steps.getversion.outputs.minor}} Patch -> ${{ steps.getversion.outputs.patch}}"
+      - name: Get version
+        id: getversion
+        uses: diligencia/semantic-git-version-action@master
+      - name: Echo name
+        run: echo "The version of the branch is ${{ steps.getversion.outputs.version }}. Major -> ${{ steps.getversion.outputs.major}} Minor -> ${{ steps.getversion.outputs.minor}} Patch -> ${{ steps.getversion.outputs.patch}}"
