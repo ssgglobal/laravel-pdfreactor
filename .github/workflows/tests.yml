@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     services:
-      pdfreactor:s
+      pdfreactor:
         image: realobjects/pdfreactor:10
         ports:
           - 8080:9423
