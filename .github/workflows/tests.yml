@@ -1,9 +1,6 @@
 name: Unit Tests
 
 on:
-  push:
-    branches:
-      - 'main'
   pull_request:
     branches:
       - main
@@ -15,7 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     services:
-      pdfreactor:
+      pdfreactor:s
         image: realobjects/pdfreactor:10
         ports:
           - 8080:9423
@@ -29,6 +26,34 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.3'
+
+      - name: PHP Composer
+        run:
+          composer install --no-progress
+
+      - name: PHPUnit Tests
+        run:
+          ./vendor/bin/phpunit
+
+  'php-7_4':
+
+    runs-on: ubuntu-20.04
+
+    services:
+      pdfreactor:s
+        image: realobjects/pdfreactor:10
+        ports:
+          - 8080:9423
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP 7.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
 
       - name: PHP Composer
         run:
