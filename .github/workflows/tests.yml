@@ -2,10 +2,11 @@ name: Unit Tests
 
 on:
   push:
-    - '2.1.0'
-pull_request:
-  branches:
-    - main
+    branches:
+      - '2.1.0'
+  pull_request:
+    branches:
+      - main
 
 jobs:
 
