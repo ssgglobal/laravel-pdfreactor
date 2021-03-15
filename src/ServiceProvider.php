@@ -13,7 +13,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->singleton('StepStone\PdfReactor\PdfReactor', function ($app) {
             $config   = $app['config']['services']['pdfreactor'];
 
-            return new PdfReactor($config['host'], $config['port'], $config['key']);
+            return new PdfReactor($config['host'], $config['key'], $config['port']);
         });
     }
 }

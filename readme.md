@@ -1,5 +1,9 @@
 <p align="center"><img width="124" height="124" src="pdfreactor.png" /></p>
 
+<p align="center">
+    <a href="https://github.com/ssgglobal/laravel-pdfreactor/actions/workflows/tests.yml"><img src="https://github.com/ssgglobal/laravel-pdfreactor/actions/workflows/tests.yml/badge.svg?branch=main" alt="Unit Tests"></a>
+</p>
+
 # Laravel PDFreactor
 A PHP wrapper for using PDFreactor with Laravel 6+.
 
