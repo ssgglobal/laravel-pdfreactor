@@ -2,16 +2,23 @@
 
 namespace StepStone\PdfReactor\Tests;
 
-use PHPUnit\Framework\TestCase as BaseTestCase;
-use StepStone\PdfReactor\PdfReactor;
+use Orchestra\Testbench\TestCase as BaseTestCase;
+use StepStone\PdfReactor\Facade;
+use StepStone\PdfReactor\ServiceProvider;
 
 class TestCase extends BaseTestCase
 {
-    /** @var PdfReactor */
-    protected $pdfReactor;
-
-    protected function setUp(): void
+    public function getPackageAliases($app)
     {
-        $this->pdfReactor     = new PdfReactor(getenv('PDFREACTOR_HOST'), getenv('PDFREACTOR_KEY'), getenv('PDFREACTOR_PORT'));
+        return [
+            'PdfReactor'    => Facade::class,
+        ];
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return [
+            ServiceProvider::class,
+        ];
     }
 }
