@@ -248,6 +248,16 @@ class PdfReactor
     }
 
     /**
+     * Returns the PdfReactor Object.
+     *
+     * @return self
+     */
+    public function getPdfReactor(): self
+    {
+        return $this;
+    }
+
+    /**
      * Get the progress of an aysnc conversion process.
      * 
      * @link https://www.pdfreactor.com/product/doc/webservice/rest.html#get-progress-id
