@@ -1,5 +1,5 @@
 {
-    "name": "ssgglobal/laravel-pdfreactor",
+    "name": "ssgglobal/pdfreactor",
     "description": "A PHP wrapper for using PDFreactor with Laravel.",
     "type": "library",
     "require": {
