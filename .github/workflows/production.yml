@@ -36,6 +36,13 @@ jobs:
         uses: ./.github/actions/build-info
 
       - 
+        uses: ./.github/actions/publish-github-tag
+        with:
+          build: 'production'
+          dsebot-token: ${ secrets.DSEBOT_GH_TOKEN }}
+          version: ${{ steps.release.outputs.version }}
+
+      - 
         uses: ./.github/actions/publish-satis
         with:
           dsebot-token: ${{ secrets.DSEBOT_GH_TOKEN }}
