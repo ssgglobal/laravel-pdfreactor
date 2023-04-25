@@ -45,7 +45,7 @@ jobs:
       - 
         uses: ./.github/actions/publish-satis
         with:
-          dsebot-token: ${{ secrets.GITHUB_TOKEN }}
+          dsebot-token: ${{ secrets.DSEBOT_GH_TOKEN }}
           repository: ${{ github.repository }}
 
       - 
