@@ -1,0 +1,50 @@
+name: Tag Release & Update Satis
+
+on:
+
+  workflow_dispatch:
+
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - 
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.DSEBOT_GH_TOKEN }}
+
+      - 
+        name: Import reusable actions from .github
+        uses: actions/checkout@v3
+        with:
+          repository: ssgglobal/.github
+          ref: '1.1'
+          path: ./.github/actions
+          token: ${{ secrets.DSEBOT_GH_TOKEN }}
+
+      ## BEGIN REUSABLE ACTIONS ##
+
+      - 
+        id: release
+        uses: ./.github/actions/build-info
+        with:
+          dsebot-token: ${{ secrets.DSEBOT_GH_TOKEN }}
+
+      - 
+        uses: ./.github/actions/publish-satis
+        with:
+          repository: ${{ github.repository }}
+
+      - 
+        uses: ./.github/actions/publish-notifier
+        with:
+          build: 'production'
+          teams-url: ${{ secrets.TEAMS_URL }}
+          version: ${{ steps.release.outputs.version }}
