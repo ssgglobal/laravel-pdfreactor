@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: ssgglobal/.github
-          ref: 'remove-satis-notifier'
+          ref: '1.1'
           path: ./.github/actions
           token: ${{ secrets.DSEBOT_GH_TOKEN }}
 
