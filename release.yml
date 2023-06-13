@@ -1,6 +1,13 @@
 releases:
 
   -
+    version: 3.0.1
+    changes:
+      - author: '@jesscarlos'
+        description: 'Add support for Laravel 10.'
+        type: 'feat'
+
+  -
     version: 3.0.0
     changes:
       - author: '@jesscarlos'
