@@ -3,14 +3,14 @@
     "description": "A PHP wrapper for using PDFreactor with Laravel.",
     "type": "library",
     "require": {
-        "php": ">= 8.1",
+        "php": ">= 8.2",
         "guzzlehttp/guzzle": "^7.4.5",
-        "illuminate/support": "^9.0|^10.0"
+        "illuminate/support": "^10|^11"
     },
     "require-dev": {
         "mockery/mockery": "^1.5",
         "phpunit/phpunit": "^10",
-        "orchestra/testbench": "^7"
+        "orchestra/testbench": "^8|^9"
     },
     "prefer-stable": true,
     "license": "proprietary",
